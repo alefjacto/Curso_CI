@@ -2,13 +2,13 @@ name: Go
 
 on:
   push:
-    branches: [ Aula_3 ]
+    branches: [ Aula_4 ]
   pull_request:
-    branches: [ Aula_3 ]
+    branches: [ Aula_4 ]
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -18,9 +18,6 @@ jobs:
       with:
         go-version: 1.18
 
-    - name: Build
-      run: go build -v main.go
-      
     - name: Build-DB
       run: docker-compose build
       
@@ -29,3 +26,10 @@ jobs:
 
     - name: Test
       run: go test -v main_test.go
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build
+      run: go build -v main.go
